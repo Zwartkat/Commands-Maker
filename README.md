@@ -1,2 +1,2 @@
-# Minecraft-Plugin-Commands-Maker
-Easy minecraft command make
+# Commands-Maker
+A library for easy creation of minecraft commands
