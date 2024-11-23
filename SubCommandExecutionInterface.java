@@ -1,4 +1,4 @@
-package fr.zwartkat.itemcreator.commands;
+package // Package
 
 @FunctionalInterface
 public interface SubCommandExecutionInterface<A,B,C,D> {
