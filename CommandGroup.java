@@ -1,6 +1,5 @@
-package fr.zwartkat.zstaff.commands;
+package // Package name
 
-import fr.zwartkat.zstaff.ZStaff;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
