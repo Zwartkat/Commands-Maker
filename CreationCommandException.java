@@ -1,6 +1,6 @@
-package fr.zwartkat.zstaff.commands;
+package // Package
 
-import fr.zwartkat.zstaff.commands.SubCommand;
+import /* Package */.SubCommand;
 
 public class CreationCommandException extends RuntimeException{
 
