@@ -1,4 +1,4 @@
-package fr.zwartkat.zstaff.commands;
+package // Package
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
