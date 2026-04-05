@@ -1,0 +1,13 @@
+Copyright (c) 2025 Zwartkat
+
+Toute personne obtenant la version originale de cette bibliothèque est 
+autorisée à l'utiliser sans restriction, y compris à des fins personnelles ou 
+commerciales, sous réserve des conditions suivantes :
+
+1. Il est autorisé de modifier ou d’adapter le code source. Le cas échéant, 
+une issue peut être créée pour signaler une problématique et proposer une amélioration, 
+afin que l’ensemble des utilisateurs puisse en bénéficier.
+2. Il est interdit de redistribuer cette bibliothèque sous une forme modifiée.
+3. Aucune garantie n’est fournie quant à l’utilisation de cette bibliothèque.
+
+L’utilisation de cette bibliothèque implique l’acceptation de ces conditions.

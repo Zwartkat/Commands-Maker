@@ -1,4 +1,4 @@
-package fr.zwartkat.commandsmaker;
+package fr.zwartkat.commandsmaker.core.base;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -7,15 +7,41 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class Completer {
+public final class Completer {
+
+    public static List<String> getPlayers(boolean online){
+        List<String> list = new ArrayList<>();
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            list.add(p.getName());
+        }
+        if(!online){
+            for(OfflinePlayer p : Bukkit.getOfflinePlayers()){
+                list.add(p.getName());
+            }
+        }
+        return list;
+    }
+
+    public static List<String> getBoolean(){
+        return List.of("true","false");
+    }
+
+    public static List<String> getAllItems(){
+        return Arrays.stream(Material.values())
+                .map(Material::name).collect(Collectors.toList());
+    }
 
     public static List<String> generatePowersOf(int base, int maxExponent) {
         List<String> powers = new ArrayList<>(maxExponent);
         for (int i = 0; i <= maxExponent; i++) {
             powers.add(String.valueOf((int) Math.pow(base, i)));
         }
+        powers.sort(Comparator.comparingInt(Integer::parseInt));
         return powers;
     }
 
@@ -24,36 +50,8 @@ public class Completer {
         for (int i = start; i <= end; i++) {
             range.add(String.valueOf(i));
         }
+        range.sort(Comparator.comparingInt(Integer::parseInt));
         return range;
-    }
-
-    public static List<String> getOnlinePlayers(){
-        List<String> playersNames = new ArrayList<>();
-        for(Player player : Bukkit.getOnlinePlayers()){
-            playersNames.add(player.getName());
-        }
-        Bukkit.broadcastMessage(playersNames.toString());
-        return playersNames;
-    }
-
-    public static List<String> getAllPlayers(){
-        List<String> playersNames = new ArrayList<>();
-
-        playersNames.addAll(Completer.getOnlinePlayers());
-        for(OfflinePlayer player : Bukkit.getOfflinePlayers()){
-            playersNames.add(player.getName());
-        }
-        return playersNames;
-    }
-
-    public static List<String> getAllItems(){
-        List<String> itemNames = new ArrayList<>();
-        for(Material item : Material.values()){
-            if(item.isItem()){
-                itemNames.add(item.name());
-            }
-        }
-        return itemNames;
     }
 
     public static List<String> getAllWorlds(){
@@ -65,5 +63,3 @@ public class Completer {
         return worldNames;
     }
 }
-
-
