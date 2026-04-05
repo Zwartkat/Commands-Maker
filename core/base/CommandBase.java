@@ -19,6 +19,10 @@ public abstract class CommandBase<T extends Parameter> implements ExecutableComm
         this.aliases = aliases;
     }
 
+    protected abstract void addParameter(T parameter);
+
+    protected abstract void setParameters(ParameterMap<T> parameterMap);
+
     public String getName() {
         return this.name;
     }
