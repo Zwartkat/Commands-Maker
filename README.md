@@ -41,70 +41,41 @@ public class ExampleCommand extends Command {
         super("example", "An example command","/example <subcommand>", List.of("ex","examples"),"example.command", ParameterMapFactory.subCommandMap());
 
         // Create a subcommand
-        SubCommand giveSubCommand = new SubCommand("give", "Exemple give", "/example give <player> <item> <amount>", new ArrayList<>(), "example.command.give", ParameterMapFactory.argumentMap());
-
-        // Add an argument to show all online players
-        giveSubCommand.addParameter(new Argument("player_to_give",Completer.getPlayers(true)));
-        // Add an argument to show all items
-        giveSubCommand.addParameter(new Argument("items", Completer.getAllItems()));
-        // Add an argument to show amount to give
-        giveSubCommand.addParameter(new Argument("amount", Completer.generatePowersOf(0,10))); // This use a list of number but there is Completer value for this
-        // Define command action
-        giveSubCommand.setAction(this::giveItem);
-
+        SubCommand giveSubCommand = new GiveSubCommand();
         // Create a  subcommand
-        SubCommand flySubCommand = new SubCommand("fly","example.command.fly","enable/disable fly","example.command.fly",ParameterMapFactory.argumentMap());
-        flySubCommand.addParameter(new Argument("enable",Completer.getBoolean()));
-        flySubCommand.setAction(this::fly);
+        SubCommand flySubCommand = new FlySubCommand();
 
-
+        // Add subcommand to this command
         this.addParameter(giveSubCommand);
         this.addParameter(flySubCommand);
 
     }
 
-    private void giveItem(CommandSender sender, String label, String[] args){
+    @Override
+    public boolean execute(CommandSender sender, String label, String[] args) {
+        return false;
+    }
+}
 
-        // You must always check arguments provided by the user (that can be length or the content of args)
-        // Subcommands aren't in args
-        if(args.length != 3) {
-            sender.sendMessage("Arguments are invalid");
-            return;
-        }
 
-        Player playerToGive = Bukkit.getPlayer(args[0]);
-        if(playerToGive == null) {
-            sender.sendMessage(ChatColor.RED + "Specified player is unknown");
-            return;
-        }
+public class FlySubCommand extends SubCommand {
+    public FlySubCommand() {
+        super("fly","example.command.fly","enable/disable fly","example.command.fly", ParameterMapFactory.argumentMap());
 
-        Material item = Material.matchMaterial(args[1]);
-        if(item == null){
-            sender.sendMessage(ChatColor.RED + "Specified item is unknown");
-            return;
-        }
-
-        Integer amount = (Integer) Integer.parseInt(args[2]);
-
-        ItemStack itemStack = new ItemStack(item, amount);
-
-        playerToGive.getInventory().addItem(itemStack);
-
-        sender.sendMessage(ChatColor.GREEN + "You have given " + itemStack.getAmount() + "x" + itemStack.getType() + " to " + playerToGive.getName());
-        playerToGive.sendMessage(ChatColor.GREEN + "You received " + itemStack.getAmount() + "x" + itemStack.getType());
-
+        this.addParameter(new Argument("enable",Completer.getBoolean()));
     }
 
-    private void fly(CommandSender sender, String label, String[] args){
+    @Override
+    public boolean execute(CommandSender sender, String label, String[] args) {
 
         if(args.length != 1) {
             sender.sendMessage("Arguments are invalid");
-            return;
+            return false;
         }
 
         if(!(sender instanceof Player)){
             sender.sendMessage("You must be a player to execute this command");
-            return;
+            return false;
         }
 
         Player player = (Player) sender;
@@ -121,11 +92,55 @@ public class ExampleCommand extends Command {
         }
         else {
             player.sendMessage("You must specify true or false");
-            return;
+            return false;
         }
+
+        return true;
+    }
+}
+
+
+public class GiveSubCommand extends SubCommand {
+    public GiveSubCommand() {
+        super("give", "Exemple give", "/example give <player> <item> <amount>", new ArrayList<>(), "example.command.give", ParameterMapFactory.argumentMap());
+    }
+
+    @Override
+    public boolean execute(CommandSender sender, String label, String[] args) {
+
+        if(args.length != 3) {
+            sender.sendMessage("Arguments are invalid");
+            return false;
+        }
+
+        Player playerToGive = Bukkit.getPlayer(args[0]);
+        if(playerToGive == null) {
+            sender.sendMessage(ChatColor.RED + "Specified player is unknown");
+            return false;
+        }
+
+        Material item = Material.matchMaterial(args[1]);
+        if(item == null){
+            sender.sendMessage(ChatColor.RED + "Specified item is unknown");
+            return false;
+        }
+
+        Integer amount = (Integer) Integer.parseInt(args[2]);
+
+        ItemStack itemStack = new ItemStack(item, amount);
+
+        playerToGive.getInventory().addItem(itemStack);
+
+        sender.sendMessage(ChatColor.GREEN + "You have given " + itemStack.getAmount() + "x" + itemStack.getType() + " to " + playerToGive.getName());
+        playerToGive.sendMessage(ChatColor.GREEN + "You received " + itemStack.getAmount() + "x" + itemStack.getType());
+
+        return true;
     }
 }
 ```
+> Les classes données en exemple ont pour objectif de montrer comment créer des commandes, le contenu exposé dans les fonctions execute sont des comportements possibles
+
+Vous devez vérifier la validité des arguments de la commande dans la fonction execute (voir l'exemple) pour éviter les comportements inattendus
 
   
 🚧 Projet en cours de développement — la bibliothèque est susceptible d’évoluer.
